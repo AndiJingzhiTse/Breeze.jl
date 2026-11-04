@@ -1,0 +1,83 @@
+# Rondeau execution, 2026-11-04
+
+The benchmark source is in this repository on the `distributed-benchmark` branch.
+Francis Poulin's seven benchmark commits and their three main-line prerequisites
+were copied with `git cherry-pick -x`. The imported file tree matches
+`francispoulin/Breeze.jl` at `72c9e851105cf0017a16fb3c122a4170f82c5694`.
+
+This run follows the student guide through section 7. Section 8 experiments are
+deferred. The configured sweep contains 17 cases, with 10 warmup steps and 500
+timed steps at a fixed time step of 0.05 seconds.
+
+## Locations
+
+| Item | Location |
+|------|----------|
+| Breeze source | `/u/ajtse/Breeze.jl` |
+| Benchmark project | `/u/ajtse/Breeze.jl/benchmarking/distributed` |
+| Platform | `/u/ajtse/software/oceananigans-hpc` |
+| Julia for Breeze | `/u/ajtse/software/julia-1.11.9` |
+| Julia package depot | `/u/ajtse/.julia` |
+| Run records | `/u/ajtse/Breeze.jl/benchmarking/results/rondeau/student_guide_2026-11-04` |
+
+## Environment
+
+From a new terminal:
+
+```bash
+cd /u/ajtse/Breeze.jl
+export OCEAN_SOFTWARE_DIR=/u/ajtse/software
+export OCEAN_RESULTS_ROOT="$PWD/benchmarking/results/rondeau/student_guide_2026-11-04"
+export OCEAN_DATA_DIR=/u/ajtse/software/ocean_data
+export JULIA_DEPOT_PATH=/u/ajtse/.julia
+export JULIA_LOAD_PATH=@:@stdlib
+export TMPDIR=/u/ajtse/software/tmp/breeze-student-guide-2026-11-04/current
+mkdir -p "$TMPDIR"
+export TMP="$TMPDIR" TEMP="$TMPDIR" OMPI_MCA_orte_tmpdir_base="$TMPDIR"
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1
+
+source /u/ajtse/software/oceananigans-hpc/env/ocean_setup.sh
+source benchmarking/distributed/pelee_rondeau/breeze_env.sh
+
+# Prevent detached local shells from reloading this account's Julia 1.12 settings.
+unset BASH_ENV SSH_CLIENT SSH_CONNECTION SSH_TTY SSH2_CLIENT
+export JULIA_NUM_THREADS=1 JULIA_NUM_PRECOMPILE_TASKS=2
+julia --version
+```
+
+The last line must report Julia 1.11.9. MPI and CUDA settings come from the
+platform. The benchmark's generated `LocalPreferences.toml` and `Manifest.toml`
+are in `benchmarking/distributed`; retained copies record the measured environment.
+
+## Run on four GPUs
+
+The platform selects free GPUs and refuses to launch if fewer than four are free:
+
+```bash
+cd "$OCEAN_RESULTS_ROOT/runs"
+bash "$OCEAN_HPC_ROOT/tools/run_local.sh" --wait -n 4 \
+    -p "$BREEZE_DISTRIBUTED_DIR" \
+    "$BREEZE_DISTRIBUTED_DIR/distributed_cbl_benchmark.jl" \
+    --dynamics=compressible_splitexplicit --size=256x256x128 \
+    --partition=2x2 --time_steps=500
+```
+
+For a fresh full sweep, use a new CSV so that completed measurements are not
+appended twice:
+
+```bash
+bash "$BREEZE_DISTRIBUTED_DIR/pelee_rondeau/run_scaling.sh" \
+    --time_steps=500 --max_gpus=4 \
+    --results_file="$OCEAN_RESULTS_ROOT/scaling-new.csv"
+```
+
+## Recorded outcomes
+
+The [run records](../../results/rondeau/student_guide_2026-11-04/) contain the CSV,
+logs, source revisions, package manifests, and environment checks. A completed
+process can still produce an unstable solution: every result with non-finite
+`max_abs_w` is excluded from performance and efficiency comparisons.
+
+The first 13 cases ran before the source was copied into this branch. Their
+original logs retain the historical paths. The source files are identical, and
+the remaining four cases continue from this repository with the same settings.
