@@ -6,6 +6,21 @@
 
 The benchmark code is in this repository on `distributed-benchmark`, under `benchmarking/distributed/`. The student guide was followed through section 7. Section 8 experiments were not run.
 
+## Split-explicit plots
+
+![Split-explicit timing and scaling efficiency](split_explicit_scaling.png)
+
+The top panels compare all strong-scaling partitions on a fixed grid; the bottom
+panels keep 8,388,608 cells per GPU. Dashed lines show ideal scaling relative to
+the one-GPU result. [Vector SVG](split_explicit_scaling.svg).
+
+Regenerate from the repository root:
+
+```bash
+python3 benchmarking/distributed/plot_split_explicit_results.py \
+    benchmarking/results/rondeau/student_guide_2026-11-04/scaling.csv
+```
+
 ## Measurement
 
 Dry convective boundary layer, Float32, WENO5, no closure or microphysics. Each case uses 10 untimed warmup steps and one 500-step timed window at Δt = 0.05 s. Split-explicit dynamics uses 12 acoustic substeps. The reported time is the mean per main time step, using GPU synchronization, MPI barriers, and the maximum elapsed time across ranks. Construction, compilation warmup, output, and final checks are outside the timed window.
