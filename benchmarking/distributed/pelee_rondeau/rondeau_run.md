@@ -71,6 +71,11 @@ bash "$BREEZE_DISTRIBUTED_DIR/pelee_rondeau/run_scaling.sh" \
     --results_file="$OCEAN_RESULTS_ROOT/scaling-new.csv"
 ```
 
+To change the time step for every case, add `--time_step=0.03`. The default
+remains 0.05 seconds. With 500 timed steps, these settings cover 15 and 25
+simulated seconds respectively; timing per step does not compare equal physical
+durations.
+
 ## Recorded outcomes
 
 The [run records](../../results/rondeau/student_guide_2026-11-04/) contain the CSV,
@@ -81,3 +86,8 @@ process can still produce an unstable solution: every result with non-finite
 The first 13 cases ran before the source was copied into this branch. Their
 original logs retain the historical paths. The source files are identical, and
 the remaining four cases continue from this repository with the same settings.
+
+The requested [2026-11-05 rerun at Δt = 0.03 s](../../results/rondeau/student_guide_2026-11-05_dt0p03/)
+uses this primary repository for all 17 cases. Every case completed with finite
+maximum vertical velocity. The report preserves the CSV, comparison, plots,
+environment, and command logs separately from the 0.05-second run.

@@ -2,6 +2,10 @@
 
 **17 of 17 configured cases completed with exit status 0. Nine produced finite vertical velocity; all eight compressible-explicit cases produced NaNs at the prescribed settings. Their timings are excluded from performance comparisons.**
 
+The [2026-11-05 rerun at Δt = 0.03 s](../student_guide_2026-11-05_dt0p03/README.md)
+produced finite maximum vertical velocity in all 17 cases, with the same step
+counts and other settings. The two runs cover different simulated durations.
+
 [CSV](scaling.csv) · [Validation](validation.json) · [Runbook](../../../distributed/pelee_rondeau/rondeau_run.md) · [Copied commits](provenance/imported_commits.json)
 
 The benchmark code is in this repository on `distributed-benchmark`, under `benchmarking/distributed/`. The student guide was followed through section 7. Section 8 experiments were not run.
