@@ -1,4 +1,4 @@
-"""Plot split-explicit timing and efficiency from a distributed benchmark CSV."""
+"""Plot explicit or split-explicit timing and efficiency from a benchmark CSV."""
 
 import argparse
 import csv
@@ -12,12 +12,12 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 
 
-def read_cases(path):
+def read_cases(path, dynamics="compressible_splitexplicit"):
     with path.open(newline="") as stream:
         rows = [row for row in csv.DictReader(stream)
-                if row["dynamics"] == "compressible_splitexplicit"]
+                if row["dynamics"] == dynamics]
     if not rows:
-        raise ValueError("No compressible_splitexplicit results in the CSV")
+        raise ValueError(f"No {dynamics} results in the CSV")
     for row in rows:
         for name in ("Nx", "Ny", "Nz", "Rx", "Ry", "gpus", "steps"):
             row[name] = int(row[name])
@@ -75,18 +75,22 @@ def panel(axis, rows, values, labels, title, ylabel, ideal, efficiency=False):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("csv", type=Path)
+    parser.add_argument("--dynamics", default="compressible_splitexplicit",
+                        choices=("compressible_explicit", "compressible_splitexplicit"))
     parser.add_argument("--output-prefix", type=Path)
     parser.add_argument("--time-step", type=float, default=0.05)
     parser.add_argument("--warmup-steps", type=int, default=10)
     parser.add_argument("--substeps", type=int, default=12)
     args = parser.parse_args()
-    baseline, strong, weak = read_cases(args.csv)
+    baseline, strong, weak = read_cases(args.csv, args.dynamics)
     reference = baseline["seconds_per_step"]
-    prefix = args.output_prefix or args.csv.parent / "split_explicit_scaling"
+    dynamics_label = {"compressible_explicit": "explicit",
+                      "compressible_splitexplicit": "split-explicit"}[args.dynamics]
+    prefix = args.output_prefix or args.csv.parent / f"{dynamics_label.replace('-', '_')}_scaling"
     prefix.parent.mkdir(parents=True, exist_ok=True)
 
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10,
-                         "svg.fonttype": "none", "svg.hashsalt": "split-explicit"})
+                         "svg.fonttype": "none", "svg.hashsalt": dynamics_label})
     figure, axes = plt.subplots(2, 2, figsize=(13, 9))
     strong_labels = [f'{row["gpus"]} GPU' + ("s" if row["gpus"] > 1 else "")
                      + f'\n{row["Rx"]}×{row["Ry"]}' for row in strong]
@@ -111,14 +115,16 @@ def main():
           "Weak scaling efficiency · t(1) / t(N)", "Efficiency",
           [100] * len(weak), efficiency=True)
 
-    figure.suptitle(f'{baseline["machine"].capitalize()} · split-explicit CBL · {baseline["float"]}',
+    figure.suptitle(f'{baseline["machine"].capitalize()} · {dynamics_label} CBL · {baseline["float"]}',
                    fontsize=19, fontweight="semibold", x=0.07, ha="left", y=0.985)
     figure.text(0.07, 0.941,
                 "All recorded partitions; partition labels show Rx × Ry. Dashed lines reference the one-GPU timing.",
                 fontsize=10, color="#475569")
-    figure.text(0.07, 0.045,
-                f'Mean per main step · {args.warmup_steps} warmup + {baseline["steps"]} timed steps'
-                f' · Δt = {args.time_step:g} s · {args.substeps} acoustic substeps\n'
+    step_details = (f'Mean per main step · {args.warmup_steps} warmup + {baseline["steps"]} timed steps'
+                    f' · Δt = {args.time_step:g} s')
+    if args.dynamics == "compressible_splitexplicit":
+        step_details += f" · {args.substeps} acoustic substeps"
+    figure.text(0.07, 0.045, step_details + "\n"
                 "One timing window per case on a shared server; no error bars.",
                 fontsize=10, color="#475569", linespacing=1.6)
     figure.subplots_adjust(left=0.07, right=0.985, top=0.865, bottom=0.16,

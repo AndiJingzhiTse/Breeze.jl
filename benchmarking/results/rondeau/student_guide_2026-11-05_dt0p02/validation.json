@@ -283,5 +283,9 @@
   "plot_png_and_svg_valid": true,
   "plot_timing_and_efficiency_labels_match_csv": true,
   "plot_numeric_labels_checked": 18,
-  "report_links_valid": true
+  "report_links_valid": true,
+  "explicit_plot_png_and_svg_valid": true,
+  "explicit_plot_timing_and_efficiency_labels_match_csv": true,
+  "explicit_plot_numeric_labels_checked": 18,
+  "default_split_explicit_plots_byte_identical": true
 }

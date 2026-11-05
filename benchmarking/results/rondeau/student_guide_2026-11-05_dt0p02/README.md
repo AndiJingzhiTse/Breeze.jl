@@ -50,6 +50,18 @@ Use a fresh results directory and CSV to avoid duplicate rows. [execution/sweep.
 
 Text logs normalize trailing whitespace. [raw_logs.zip](raw_logs.zip) preserves their original bytes; [log_originals.json](log_originals.json) records sizes and SHA-256 hashes. CUDA library-path warnings and PMIx cleanup messages are retained. No additional MPI numerical-comparison tests were run for this timestep-only rerun.
 
+## Explicit scaling
+
+![Explicit timing and efficiency at Δt = 0.02](explicit_scaling.png)
+
+The top panels use a fixed 256×256×128 global grid; the bottom panels keep 8,388,608 cells per GPU. Strong efficiency is t(1)/(N × t(N)); weak efficiency is t(1)/t(N). All recorded partitions are shown. [Vector SVG](explicit_scaling.svg).
+
+```bash
+python3 benchmarking/distributed/plot_split_explicit_results.py \
+    benchmarking/results/rondeau/student_guide_2026-11-05_dt0p02/scaling.csv \
+    --dynamics compressible_explicit --time-step=0.02
+```
+
 ## Split-explicit scaling
 
 ![Split-explicit timing and efficiency at Δt = 0.02](split_explicit_scaling.png)
