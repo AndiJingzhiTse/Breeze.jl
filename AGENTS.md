@@ -153,6 +153,8 @@ update tests and docs with code changes, check CI before merging.
 **PRs fail CI with trailing whitespace or trailing blank lines.** Before committing:
 remove trailing whitespace, remove trailing blank lines, ensure file ends with exactly one newline.
 
+Make a commit after completing each task
+
 ## Agent Behavior
 
 - Prioritize type stability and GPU compatibility

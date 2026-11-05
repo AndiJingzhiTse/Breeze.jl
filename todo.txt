@@ -1,0 +1,3 @@
+try 512x512x128 run maximum res on hydrostatic, nonhydrostatic, 3 from breeze with nsight
+run breeze with NCCL option just weak scaling
+try to see if can use NVTX

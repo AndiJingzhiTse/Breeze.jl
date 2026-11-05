@@ -70,6 +70,7 @@ examples/tropical_cyclone_world.md
 examples/atsc-jas-d-18-0357*
 
 # Benchmarking output
+/.runtime/
 *.json
 benchmark_results.md
 
