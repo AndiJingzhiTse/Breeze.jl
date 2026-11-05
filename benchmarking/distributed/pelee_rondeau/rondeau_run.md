@@ -91,3 +91,9 @@ The requested [2026-11-05 rerun at Δt = 0.03 s](../../results/rondeau/student_g
 uses this primary repository for all 17 cases. Every case completed with finite
 maximum vertical velocity. The report preserves the CSV, comparison, plots,
 environment, and command logs separately from the 0.05-second run.
+
+The subsequent [Δt = 0.02 s rerun](../../results/rondeau/student_guide_2026-11-05_dt0p02/)
+also completed all 17 cases with finite maximum vertical velocity. It retains the
+same grids, partitions, 10 warmup steps, 500 timed steps, and 12 acoustic substeps,
+covering 10 simulated seconds per timed window. The results include a comparison
+with the 0.03-second run, raw logs, provenance, and updated split-explicit plots.
