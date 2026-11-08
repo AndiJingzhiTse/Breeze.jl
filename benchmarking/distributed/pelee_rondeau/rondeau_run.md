@@ -104,3 +104,10 @@ three dynamics completed 10 warmup and 10 timed steps at 512×512×256. The next
 grid, 1024×1024×512, failed with GPU out-of-memory errors for all three. The
 report records observed device-memory usage, commands, and both successful and
 failed logs. These short runs establish memory-fit bounds at Δt = 0.02 s.
+
+The [512³ follow-up](../../results/rondeau/single_gpu_512_cubed_2026-11-07/)
+fits all three dynamics on one GPU with Float32. Anelastic and split-explicit
+cases retained finite maximum vertical velocity at Δt = 0.02 s. The explicit
+case produced non-finite velocity at that step size; a separate Δt = 0.005 s
+retry completed with finite velocity. All attempts used 10 warmup and 10 timed
+steps, with both explicit outcomes retained in the report.
