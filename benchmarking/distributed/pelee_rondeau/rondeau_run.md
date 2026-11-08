@@ -97,3 +97,10 @@ also completed all 17 cases with finite maximum vertical velocity. It retains th
 same grids, partitions, 10 warmup steps, 500 timed steps, and 12 acoustic substeps,
 covering 10 simulated seconds per timed window. The results include a comparison
 with the 0.03-second run, raw logs, provenance, and updated split-explicit plots.
+
+The [2026-11-07 single-GPU capacity search](../../results/rondeau/single_gpu_maximum_resolution_2026-11-07/)
+keeps Float32 precision and the power-of-two grid family Nx = Ny = 2 Nz. All
+three dynamics completed 10 warmup and 10 timed steps at 512×512×256. The next
+grid, 1024×1024×512, failed with GPU out-of-memory errors for all three. The
+report records observed device-memory usage, commands, and both successful and
+failed logs. These short runs establish memory-fit bounds at Δt = 0.02 s.
