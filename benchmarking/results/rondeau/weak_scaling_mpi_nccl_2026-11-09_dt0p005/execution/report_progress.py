@@ -91,6 +91,9 @@ def main():
     if staged.strip():
         raise RuntimeError("Other staged work exists; automatic study commit withheld")
     subprocess.run(["git", "add", "--", str(STUDY)], cwd=REPO, check=True)
+    retained = [str(path) for path in STUDY.iterdir() if path.suffix in (".png", ".svg", ".zip")]
+    if retained:
+        subprocess.run(["git", "add", "-f", "--", *retained], cwd=REPO, check=True)
     subprocess.run(["git", "diff", "--cached", "--check", "--", str(STUDY)], cwd=REPO, check=True)
     subprocess.run(["git", "commit", "-m", "Record MPI/NCCL scaling at timestep 0.005 with both four-GPU partitions"],
                    cwd=REPO, check=True)
