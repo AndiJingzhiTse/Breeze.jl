@@ -1,0 +1,9 @@
+2026-11-09T19:28:25.473688+00:00 START compressible_explicit_SERIAL_1g GPUs=[1]
+2026-11-09T19:33:51.447802+00:00 COMPLETE compressible_explicit_SERIAL_1g seconds_per_step=0.3360169 finite=True
+2026-11-09T19:33:51.613126+00:00 START compressible_splitexplicit_SERIAL_1g GPUs=[1]
+2026-11-09T19:47:16.490646+00:00 COMPLETE compressible_splitexplicit_SERIAL_1g seconds_per_step=1.215426 finite=True
+2026-11-09T19:47:16.681375+00:00 START compressible_explicit_MPI_2g GPUs=[1, 2]
+2026-11-09T19:53:33.681805+00:00 COMPLETE compressible_explicit_MPI_2g seconds_per_step=0.3436055 finite=True
+2026-11-09T19:53:33.834589+00:00 START compressible_explicit_NCCL_2g GPUs=[1, 2]
+2026-11-09T20:00:00.867328+00:00 COMPLETE compressible_explicit_NCCL_2g seconds_per_step=0.3476637 finite=True
+2026-11-09T20:00:01.036170+00:00 START compressible_splitexplicit_MPI_2g GPUs=[1, 2]
