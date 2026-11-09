@@ -157,6 +157,7 @@ Make a commit after completing each task
 
 ## Agent Behavior
 
+- If you have questions about a task, ask the user and wait for their answers before executing the task.
 - Prioritize type stability and GPU compatibility
 - Follow established patterns in existing code
 - Add tests for new functionality; update exports when adding public API
