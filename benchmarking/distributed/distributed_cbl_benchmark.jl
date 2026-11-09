@@ -23,6 +23,7 @@
 #####   --substeps         acoustic substeps (split-explicit only)             (default 12)
 #####   --float_type       Float32 | Float64                                   (default Float32)
 #####   --simplified       true | false: drop geostrophic forcing and drag BCs (default false)
+#####   --profile          true | false: capture the timed steps with Nsight  (default false)
 #####   --results_file     append one CSV line of results to this file         (default: none)
 #####
 
@@ -55,6 +56,14 @@ end
 
 parse_dimensions(text) = Tuple(parse.(Int, split(text, ['x', '×', '*'])))
 
+function advance_time_steps!(model, Δt, time_steps)
+    for _ in 1:time_steps
+        time_step!(model, Δt)
+    end
+    CUDA.synchronize()
+    return nothing
+end
+
 dynamics_name = option("dynamics", "compressible_splitexplicit")
 comm_name     = uppercase(option("comm", "MPI"))
 Nx, Ny, Nz    = parse_dimensions(option("size", "256x256x128"))
@@ -65,6 +74,7 @@ warmup_steps  = parse(Int, option("warmup_steps", "10"))
 substeps      = parse(Int, option("substeps", "12"))
 FT            = option("float_type", "Float32") == "Float64" ? Float64 : Float32
 simplified    = option("simplified", "false") == "true"
+profile       = parse(Bool, option("profile", "false"))
 results_file  = option("results_file", "")
 
 Rx * Ry == nranks || error("--partition=$(Rx)x$(Ry) needs $(Rx * Ry) ranks but mpiexec started $nranks")
@@ -110,22 +120,24 @@ communicator_type = nranks == 1 ? "none" : string(nameof(typeof(arch.communicato
 
 model = convective_boundary_layer(arch; float_type = FT, Nx, Ny, Nz, dynamics, simplified)
 
-rank == 0 && @info "Distributed CBL benchmark" dynamics_name FT (Nx, Ny, Nz) partition=(Rx, Ry) nranks Δt time_steps communication_name communicator_type
+rank == 0 && @info "Distributed CBL benchmark" dynamics_name FT (Nx, Ny, Nz) partition=(Rx, Ry) nranks Δt time_steps communication_name communicator_type profile
 
-for _ in 1:warmup_steps
-    time_step!(model, FT(Δt))
-end
+advance_time_steps!(model, FT(Δt), warmup_steps)
 
-CUDA.synchronize()
 rank == 0 && @printf("TIMING_START communication=%s steps=%d\n", communication_name, time_steps)
 MPI.Barrier(comm)
 start_time = time_ns()
 
-for _ in 1:time_steps
-    time_step!(model, FT(Δt))
+if profile
+    @printf("PROFILE_START rank=%d steps=%d\n", rank, time_steps)
+    # Warmup compiles this same stepping function. Only the requested timed steps and their
+    # final device synchronization are captured; model setup and field checks stay outside.
+    CUDA.@profile external=true advance_time_steps!(model, FT(Δt), time_steps)
+    @printf("PROFILE_END rank=%d steps=%d\n", rank, time_steps)
+else
+    advance_time_steps!(model, FT(Δt), time_steps)
 end
 
-CUDA.synchronize()
 MPI.Barrier(comm)
 elapsed = MPI.Allreduce((time_ns() - start_time) / 1e9, max, comm)
 rank == 0 && @printf("TIMING_END communication=%s elapsed_seconds=%.9f\n", communication_name, elapsed)

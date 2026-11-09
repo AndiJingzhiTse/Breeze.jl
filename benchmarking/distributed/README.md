@@ -51,6 +51,7 @@ have checked out.
 | `--substeps` | `12` | Acoustic substeps (split-explicit only) |
 | `--float_type` | `Float32` | `Float32` or `Float64` |
 | `--simplified` | `false` | Drop the geostrophic forcing and the field-dependent drag boundary conditions |
+| `--profile` | `false` | Start/stop an external CUDA profiler around the timed steps, after warmup |
 | `--results_file` | none | Append one CSV line of results to this file |
 
 For NCCL communication on two GPUs:
@@ -65,6 +66,28 @@ mpiexec -n 2 julia --project=benchmarking/distributed \
 MPI still launches ranks and supplies timing barriers and reductions. NCCL performs GPU halo
 communication. The result records the effective backend as `SERIAL`, `MPI`, or `NCCL`; a one-GPU
 run has no inter-rank communication and can serve as the reference for both distributed backends.
+
+## Nsight Systems
+
+Pass `--profile=true` and launch each rank under `nsys profile` with
+`--capture-range=cudaProfilerApi --capture-range-end=stop`. The driver captures exactly
+`--time_steps` steps after `--warmup_steps`, including the final CUDA synchronization.
+Model construction, warmup/JIT, and the final field checks are outside the capture.
+
+```bash
+CUDA_VISIBLE_DEVICES=1 nsys profile --trace=cuda,nvtx,mpi --mpi-impl=openmpi \
+    --sample=none --cpuctxsw=none --capture-range=cudaProfilerApi --capture-range-end=stop \
+    --output=/local_scratch/ajtse/cbl_explicit_1gpu \
+    julia --project=benchmarking/distributed benchmarking/distributed/distributed_cbl_benchmark.jl \
+    --dynamics=compressible_explicit --size=512x512x512 --partition=1x1 \
+    --time_step=0.005 --warmup_steps=10 --time_steps=10 --profile=true
+```
+
+For several ranks, place `nsys profile` inside the MPI launch and give each rank a unique
+output prefix. The recorded timing includes profiling overhead and belongs in a separate
+results file from unprofiled timings. One GPU remains the shared plain-GPU serial baseline.
+For each study, list the exact `.nsys-rep` paths in its `README.md`; do not generate plots
+for Nsight runs.
 
 ## Reading the output
 
