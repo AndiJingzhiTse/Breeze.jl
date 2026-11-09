@@ -2,7 +2,7 @@
 
 `distributed_cbl_benchmark.jl` times the convective boundary layer (CBL) case of
 [`../src/convective_boundary_layer.jl`](../src/convective_boundary_layer.jl) on several GPUs, one GPU per
-MPI rank, using Oceananigans' `Distributed` architecture. It calls `time_step!` directly, with no
+MPI rank, using Oceananigans' `Distributed` or `NCCLDistributed` architecture. It calls `time_step!` directly, with no
 Reactant or `Simulation` overhead, and reports points per second. The single-GPU benchmark in
 `../run_benchmarks.jl` does not support `Distributed`, which is why this is a separate driver.
 
@@ -17,8 +17,10 @@ Reactant or `Simulation` overhead, and reports points per second. The single-GPU
 ## Requirements
 
 - Julia ≥ 1.11.9.
-- MPI.jl configured to use a **CUDA-aware** system MPI. Without it, GPU halo exchange does not work.
+- MPI.jl configured to match the system launcher. The MPI backend requires a **CUDA-aware** MPI;
   `MPI.has_cuda()` should return `true`.
+- The NCCL backend requires NCCL.jl (included in this benchmark project). `--comm=NCCL` loads
+  Oceananigans' NCCL extension and verifies the communicator before constructing the model.
 - At least as many GPUs as ranks. Each rank must see its own GPU (`CUDA_VISIBLE_DEVICES` per rank, or a
   launcher that assigns devices).
 
@@ -42,6 +44,7 @@ have checked out.
 | `--dynamics` | `compressible_splitexplicit` | `anelastic` (1 GPU only), `compressible_explicit` or `compressible_splitexplicit` |
 | `--size` | `256x256x128` | Global grid, `NxNyxNz` |
 | `--partition` | `<ranks>x1` | Ranks in x and y, `RxxRy`; must multiply to the number of ranks |
+| `--comm` | `MPI` | `MPI` or `NCCL` for multi-GPU halo exchange; one rank uses the shared serial GPU baseline |
 | `--time_steps` | `100` | Timed steps |
 | `--warmup_steps` | `10` | Untimed steps; they include compilation |
 | `--time_step` | `0.05` | Time step in seconds |
@@ -50,18 +53,40 @@ have checked out.
 | `--simplified` | `false` | Drop the geostrophic forcing and the field-dependent drag boundary conditions |
 | `--results_file` | none | Append one CSV line of results to this file |
 
+For NCCL communication on two GPUs:
+
+```bash
+mpiexec -n 2 julia --project=benchmarking/distributed \
+    benchmarking/distributed/distributed_cbl_benchmark.jl \
+    --comm=NCCL --dynamics=compressible_splitexplicit \
+    --size=1024x512x512 --partition=2x1 --time_step=0.02
+```
+
+MPI still launches ranks and supplies timing barriers and reductions. NCCL performs GPU halo
+communication. The result records the effective backend as `SERIAL`, `MPI`, or `NCCL`; a one-GPU
+run has no inter-rank communication and can serve as the reference for both distributed backends.
+
 ## Reading the output
 
 Rank 0 prints one line:
 
 ```
-RESULT machine=... dynamics=... float=... size=... partition=... gpus=... steps=... seconds_per_step=... points_per_second=... points_per_second_per_gpu=... max_abs_w=...
+RESULT machine=... dynamics=... float=... size=... partition=... gpus=... steps=... seconds_per_step=... points_per_second=... points_per_second_per_gpu=... max_abs_w=... communication=... fields_finite=...
 ```
 
 - `points_per_second` uses the **global** number of grid points.
 - `max_abs_w` is a blow-up check. If it is not finite, the timing is meaningless.
+- `fields_finite` checks every prognostic and velocity field on every rank after timing. A false
+  value excludes the result from performance comparisons, even when the process exits successfully.
+- CSV rows include `communication` and `fields_finite`. Use a fresh results CSV when switching
+  from an older driver version; incompatible headers are rejected before model construction.
 - Small grids are dominated by kernel-launch and halo-exchange latency, so more GPUs can be slower. Judge
   scaling on grids of several million points per GPU, with at least a few hundred timed steps.
+
+`plot_split_explicit_results.py --compare-comm` compares MPI and NCCL weak-scaling times and
+efficiencies, using the shared serial reference. `--comm=MPI` or `--comm=NCCL` selects one backend
+for the original scaling layout. Plots reject non-finite fields and require an explicit backend
+choice when the CSV contains both MPI and NCCL.
 
 ## pelee and rondeau (Waterloo fluids group)
 
