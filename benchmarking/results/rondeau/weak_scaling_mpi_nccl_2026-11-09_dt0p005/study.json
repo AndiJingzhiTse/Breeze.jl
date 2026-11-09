@@ -351,7 +351,7 @@
         2,
         1
       ],
-      "state": "RUNNING",
+      "state": "COMPLETE",
       "started_utc": "2026-11-09T20:00:01.034770+00:00",
       "gpu_ids": [
         1,
@@ -402,7 +402,17 @@
           "julia",
           "13222"
         ]
-      ]
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-11-09T20:14:58.082528+00:00",
+      "elapsed_wall_seconds": 897.046,
+      "log": "runs/logs/dt0p005_compressible_splitexplicit_MPI_2g_20261109-150001.out",
+      "driver_exit_zero": true,
+      "seconds_per_step": 1.266162,
+      "fields_finite": true,
+      "max_abs_w": 0.02027457,
+      "performance_valid": true,
+      "numerical_status": "FINITE_FIELDS"
     },
     {
       "id": "compressible_splitexplicit_NCCL_2g",
@@ -418,7 +428,70 @@
         2,
         1
       ],
-      "state": "PENDING"
+      "state": "COMPLETE",
+      "started_utc": "2026-11-09T20:14:58.271043+00:00",
+      "gpu_ids": [
+        1,
+        2
+      ],
+      "peak_mib": {
+        "1": 28001,
+        "2": 28001
+      },
+      "workers": [
+        {
+          "pid": 2651398,
+          "executable": "/u/ajtse/software/julia-1.11.9/bin/julia",
+          "environment": {
+            "CUDA_VISIBLE_DEVICES": "1",
+            "JULIA_NUM_THREADS": "1",
+            "JULIA_CUDA_MEMORY_POOL": "none",
+            "OMPI_COMM_WORLD_RANK": "0"
+          },
+          "library_mappings": [
+            "/opt/uw/openmpi/4.1.7-with-cuda/lib/libmpi.so.40.30.7",
+            "/u/ajtse/.julia/artifacts/4cab8c1f17d10dbadebac1031ed2b5cb9ad4be4f/lib/libnccl.so.2.32.3"
+          ]
+        },
+        {
+          "pid": 2651399,
+          "executable": "/u/ajtse/software/julia-1.11.9/bin/julia",
+          "environment": {
+            "CUDA_VISIBLE_DEVICES": "2",
+            "JULIA_NUM_THREADS": "1",
+            "JULIA_CUDA_MEMORY_POOL": "none",
+            "OMPI_COMM_WORLD_RANK": "1"
+          },
+          "library_mappings": [
+            "/opt/uw/openmpi/4.1.7-with-cuda/lib/libmpi.so.40.30.7",
+            "/u/ajtse/.julia/artifacts/4cab8c1f17d10dbadebac1031ed2b5cb9ad4be4f/lib/libnccl.so.2.32.3"
+          ]
+        }
+      ],
+      "prelaunch_gpu_processes": [
+        [
+          "GPU-3cc138cf-9b95-c6e6-9b51-330b5d985885",
+          "1677559",
+          "julia",
+          "16710"
+        ],
+        [
+          "GPU-3cc138cf-9b95-c6e6-9b51-330b5d985885",
+          "1829498",
+          "julia",
+          "13222"
+        ]
+      ],
+      "exit_code": 0,
+      "finished_utc": "2026-11-09T20:30:04.850553+00:00",
+      "elapsed_wall_seconds": 906.578,
+      "log": "runs/logs/dt0p005_compressible_splitexplicit_NCCL_2g_20261109-151458.out",
+      "driver_exit_zero": true,
+      "seconds_per_step": 1.285433,
+      "fields_finite": true,
+      "max_abs_w": 0.02036724,
+      "performance_valid": true,
+      "numerical_status": "FINITE_FIELDS"
     },
     {
       "id": "compressible_explicit_MPI_4g_2x2",
@@ -434,7 +507,8 @@
         2,
         2
       ],
-      "state": "PENDING"
+      "state": "WAITING_FOR_GPUS",
+      "waiting_since_utc": "2026-11-09T20:30:05.074925+00:00"
     },
     {
       "id": "compressible_explicit_NCCL_4g_2x2",

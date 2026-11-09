@@ -1,6 +1,6 @@
 # Rondeau MPI/NCCL weak scaling at Δt = 0.005 s
 
-Updated 2026-11-09 15:00 EST. **4/14 cases complete; 4 with finite fields.**
+Updated 2026-11-09 15:30 EST. **6/14 cases complete; 6 with finite fields.**
 
 Both compressible dynamics are rerun from the previous 0.02-second study. The only physics/timing change is
 Δt = 0.005 s. The added four-GPU cases compare partitions 2×2 and 4×1 on the same global grid.
@@ -24,6 +24,8 @@ The 4×1 layout has local grids 256×1024×512; 2×2 has 512×512×512. Both ret
 | Split-explicit | SERIAL | 1 | 1x1 | 1.215426 | 100.0% | Finite |
 | Explicit | MPI | 2 | 2x1 | 0.343606 | 97.8% | Finite |
 | Explicit | NCCL | 2 | 2x1 | 0.347664 | 96.6% | Finite |
+| Split-explicit | MPI | 2 | 2x1 | 1.266162 | 96.0% | Finite |
+| Split-explicit | NCCL | 2 | 2x1 | 1.285433 | 94.6% | Finite |
 
 Weak efficiency is 100 × serial time / distributed time. The shared one-GPU baseline uses plain GPU().
 Times are the maximum rank elapsed time divided by 500, with CUDA synchronization and MPI barriers at
@@ -32,9 +34,7 @@ per case on a shared server, without repeats or error bars; differences do not e
 
 ## Pending cases
 
-- compressible_splitexplicit_MPI_2g: RUNNING
-- compressible_splitexplicit_NCCL_2g: PENDING
-- compressible_explicit_MPI_4g_2x2: PENDING
+- compressible_explicit_MPI_4g_2x2: WAITING_FOR_GPUS
 - compressible_explicit_NCCL_4g_2x2: PENDING
 - compressible_splitexplicit_MPI_4g_2x2: PENDING
 - compressible_splitexplicit_NCCL_4g_2x2: PENDING

@@ -3,3 +3,5 @@ rondeau,compressible_explicit,Float32,512,512,512,1,1,1,500,3.360169e-01,3.99437
 rondeau,compressible_splitexplicit,Float32,512,512,512,1,1,1,500,1.215426e+00,1.104285e+08,2.490426e-02,SERIAL,true
 rondeau,compressible_explicit,Float32,1024,512,512,2,1,2,500,3.436055e-01,7.812315e+08,1.347446e-02,MPI,true
 rondeau,compressible_explicit,Float32,1024,512,512,2,1,2,500,3.476637e-01,7.721125e+08,1.347653e-02,NCCL,true
+rondeau,compressible_splitexplicit,Float32,1024,512,512,2,1,2,500,1.266162e+00,2.120072e+08,2.027457e-02,MPI,true
+rondeau,compressible_splitexplicit,Float32,1024,512,512,2,1,2,500,1.285433e+00,2.088289e+08,2.036724e-02,NCCL,true
