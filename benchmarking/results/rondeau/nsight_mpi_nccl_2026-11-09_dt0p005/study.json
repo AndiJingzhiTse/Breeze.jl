@@ -1,0 +1,131 @@
+{
+  "status": "WAITING_FOR_BENCHMARK",
+  "created_utc": "2026-11-09T19:53:24.250820+00:00",
+  "time_step_seconds": 0.005,
+  "warmup_steps": 10,
+  "captured_steps": 10,
+  "configured_cases": 6,
+  "cases": [
+    {
+      "id": "compressible_explicit_SERIAL_1g",
+      "dynamics": "compressible_explicit",
+      "communication": "SERIAL",
+      "gpus": 1,
+      "size": [
+        512,
+        512,
+        512
+      ],
+      "partition": [
+        1,
+        1
+      ],
+      "state": "PENDING"
+    },
+    {
+      "id": "compressible_explicit_MPI_4g",
+      "dynamics": "compressible_explicit",
+      "communication": "MPI",
+      "gpus": 4,
+      "size": [
+        1024,
+        1024,
+        512
+      ],
+      "partition": null,
+      "state": "PENDING"
+    },
+    {
+      "id": "compressible_explicit_NCCL_4g",
+      "dynamics": "compressible_explicit",
+      "communication": "NCCL",
+      "gpus": 4,
+      "size": [
+        1024,
+        1024,
+        512
+      ],
+      "partition": null,
+      "state": "PENDING"
+    },
+    {
+      "id": "compressible_splitexplicit_SERIAL_1g",
+      "dynamics": "compressible_splitexplicit",
+      "communication": "SERIAL",
+      "gpus": 1,
+      "size": [
+        512,
+        512,
+        512
+      ],
+      "partition": [
+        1,
+        1
+      ],
+      "state": "PENDING"
+    },
+    {
+      "id": "compressible_splitexplicit_MPI_4g",
+      "dynamics": "compressible_splitexplicit",
+      "communication": "MPI",
+      "gpus": 4,
+      "size": [
+        1024,
+        1024,
+        512
+      ],
+      "partition": null,
+      "state": "PENDING"
+    },
+    {
+      "id": "compressible_splitexplicit_NCCL_4g",
+      "dynamics": "compressible_splitexplicit",
+      "communication": "NCCL",
+      "gpus": 4,
+      "size": [
+        1024,
+        1024,
+        512
+      ],
+      "partition": null,
+      "state": "PENDING"
+    }
+  ],
+  "pilots": [
+    {
+      "id": "serial_explicit",
+      "dynamics": "compressible_explicit",
+      "communication": "SERIAL",
+      "gpus": 1,
+      "size": [
+        32,
+        32,
+        16
+      ],
+      "partition": [
+        1,
+        1
+      ],
+      "state": "PENDING"
+    },
+    {
+      "id": "nccl_splitexplicit",
+      "dynamics": "compressible_splitexplicit",
+      "communication": "NCCL",
+      "gpus": 2,
+      "size": [
+        64,
+        32,
+        16
+      ],
+      "partition": [
+        2,
+        1
+      ],
+      "state": "PENDING"
+    }
+  ],
+  "source": "/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/source",
+  "raw_profiles_root": "/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles",
+  "partition_reference": "/u/ajtse/Breeze.jl/benchmarking/results/rondeau/weak_scaling_mpi_nccl_2026-11-09_dt0p005"
+}
