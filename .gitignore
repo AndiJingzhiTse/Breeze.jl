@@ -77,3 +77,4 @@ benchmark_results.md
 # Retained benchmark results and environment snapshots
 !benchmarking/results/**/*.json
 !benchmarking/results/**/Manifest.toml
+!benchmarking/queued_fork_migration/*.json
