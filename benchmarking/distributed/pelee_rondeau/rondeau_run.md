@@ -111,3 +111,12 @@ cases retained finite maximum vertical velocity at Δt = 0.02 s. The explicit
 case produced non-finite velocity at that step size; a separate Δt = 0.005 s
 retry completed with finite velocity. All attempts used 10 warmup and 10 timed
 steps, with both explicit outcomes retained in the report.
+
+The [MPI/NCCL weak-scaling study](../../results/rondeau/weak_scaling_mpi_nccl_2026-11-08_dt0p02/)
+completed all ten cases at Δt = 0.02 s, with 512³ cells per GPU on 1, 2, and
+4 GPUs, 10 warmup steps, and 500 timed steps. All five split-explicit cases
+retained finite prognostic and velocity fields. On four GPUs, MPI measured
+1.495404 s/step and NCCL 1.395613 s/step (81.4% and 87.3% weak efficiency).
+All five explicit cases produced non-finite fields and are excluded from
+performance metrics. The report includes the complete plots, two- and four-GPU
+NCCL halo checks, raw measurements, logs, and provenance.

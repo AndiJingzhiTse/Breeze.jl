@@ -107,8 +107,8 @@ def plot_communication_comparison(args):
     positions = list(range(len(curves["MPI"])))
     labels = [f'{row["gpus"]} GPU' + ("s" if row["gpus"] > 1 else "")
               + "\n" + "×".join(map(str, row["grid"])) for row in curves["MPI"]]
-    for backend, color, marker, offset in (("MPI", "#2563eb", "o", 9),
-                                            ("NCCL", "#0891b2", "s", -17)):
+    for backend, color, marker in (("MPI", "#2563eb", "o"),
+                                   ("NCCL", "#0891b2", "s")):
         rows = curves[backend]
         times = [1000 * row["seconds_per_step"] for row in rows]
         efficiencies = [100 * reference / row["seconds_per_step"] for row in rows]
@@ -119,6 +119,11 @@ def plot_communication_comparison(args):
                 if index == 0 and backend == "NCCL":
                     continue
                 label = f"{value:.1f}%" if efficiency else f"{value:.2f}"
+                other_backend = "NCCL" if backend == "MPI" else "MPI"
+                other_time = curves[other_backend][index]["seconds_per_step"]
+                other_value = 100 * reference / other_time if efficiency else 1000 * other_time
+                above = value > other_value or (value == other_value and backend == "MPI")
+                offset = 9 if above else -17
                 axis.annotate(label, (index, value), xytext=(0, offset),
                               textcoords="offset points", ha="center", fontsize=9, color=color,
                               bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.85, "pad": 1})
