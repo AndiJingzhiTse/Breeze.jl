@@ -120,7 +120,8 @@ def plot_communication_comparison(args):
                     continue
                 label = f"{value:.1f}%" if efficiency else f"{value:.2f}"
                 axis.annotate(label, (index, value), xytext=(0, offset),
-                              textcoords="offset points", ha="center", fontsize=9, color=color)
+                              textcoords="offset points", ha="center", fontsize=9, color=color,
+                              bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.85, "pad": 1})
     axes[0].axhline(1000 * reference, color="#374151", linestyle="--", label="Ideal weak scaling")
     axes[1].axhline(100, color="#374151", linestyle="--", label="Ideal weak scaling")
     axes[0].set_title("Weak scaling · mean time per step", loc="left", fontweight="semibold")
@@ -132,9 +133,10 @@ def plot_communication_comparison(args):
     axes[0].set_ylim(0, 1.25 * max(1000 * row["seconds_per_step"] for rows in curves.values() for row in rows))
     for axis in axes:
         axis.set_xticks(positions, labels)
+        axis.set_xlim(-0.22, len(positions) - 1 + 0.22)
         axis.grid(axis="y", color="#e5e7eb", linewidth=0.8)
         axis.spines[["top", "right"]].set_visible(False)
-        axis.legend(frameon=False, fontsize=9)
+        axis.legend(loc="lower left", frameon=False, fontsize=9)
     figure.suptitle(f'{baseline["machine"].capitalize()} · {dynamics_label} CBL · MPI vs NCCL',
                    fontsize=18, fontweight="semibold", x=0.07, ha="left", y=0.99)
     figure.text(0.07, 0.91, f'{baseline["cells"]:,} cells/GPU · {baseline["float"]} · shared one-GPU serial reference',
