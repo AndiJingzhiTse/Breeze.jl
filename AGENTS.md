@@ -158,6 +158,8 @@ Make a commit after completing each task
 ## Agent Behavior
 
 - If you have questions about a task, ask the user and wait for their answers before executing the task.
+- Create plots when applicable, except for Nsight profiling runs.
+- For Nsight runs, record the exact path to each Nsight result file in the run's `README.md`.
 - Prioritize type stability and GPU compatibility
 - Follow established patterns in existing code
 - Add tests for new functionality; update exports when adding public API
