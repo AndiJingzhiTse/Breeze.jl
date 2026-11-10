@@ -1,6 +1,6 @@
 # Rondeau MPI/NCCL weak scaling at Δt = 0.005 s
 
-Updated 2026-11-09 15:30 EST. **6/14 cases complete; 6 with finite fields.**
+Updated 2026-11-10 03:51 EST. **14/14 cases complete; 14 with finite fields.**
 
 Both compressible dynamics are rerun from the previous 0.02-second study. The only physics/timing change is
 Δt = 0.005 s. The added four-GPU cases compare partitions 2×2 and 4×1 on the same global grid.
@@ -26,24 +26,48 @@ The 4×1 layout has local grids 256×1024×512; 2×2 has 512×512×512. Both ret
 | Explicit | NCCL | 2 | 2x1 | 0.347664 | 96.6% | Finite |
 | Split-explicit | MPI | 2 | 2x1 | 1.266162 | 96.0% | Finite |
 | Split-explicit | NCCL | 2 | 2x1 | 1.285433 | 94.6% | Finite |
+| Explicit | MPI | 4 | 2x2 | 0.367202 | 91.5% | Finite |
+| Explicit | NCCL | 4 | 2x2 | 0.370777 | 90.6% | Finite |
+| Split-explicit | MPI | 4 | 2x2 | 1.474333 | 82.4% | Finite |
+| Split-explicit | NCCL | 4 | 2x2 | 1.392204 | 87.3% | Finite |
+| Explicit | MPI | 4 | 4x1 | 0.370088 | 90.8% | Finite |
+| Explicit | NCCL | 4 | 4x1 | 0.352779 | 95.2% | Finite |
+| Split-explicit | MPI | 4 | 4x1 | 1.399117 | 86.9% | Finite |
+| Split-explicit | NCCL | 4 | 4x1 | 1.319781 | 92.1% | Finite |
 
 Weak efficiency is 100 × serial time / distributed time. The shared one-GPU baseline uses plain GPU().
 Times are the maximum rank elapsed time divided by 500, with CUDA synchronization and MPI barriers at
 window boundaries. Construction/JIT/warmup and field validation are excluded. There is one timing window
 per case on a shared server, without repeats or error bars; differences do not establish statistical significance.
 
-## Pending cases
+## Four-GPU comparison
 
-- compressible_explicit_MPI_4g_2x2: WAITING_FOR_GPUS
-- compressible_explicit_NCCL_4g_2x2: PENDING
-- compressible_splitexplicit_MPI_4g_2x2: PENDING
-- compressible_splitexplicit_NCCL_4g_2x2: PENDING
-- compressible_explicit_MPI_4g_4x1: PENDING
-- compressible_explicit_NCCL_4g_4x1: PENDING
-- compressible_splitexplicit_MPI_4g_4x1: PENDING
-- compressible_splitexplicit_NCCL_4g_4x1: PENDING
+| Dynamics | Backend | 2×2 s/step | 4×1 s/step | 2×2 time / 4×1 time |
+|---|---|---|---|---|
+| Explicit | MPI | 0.367202 | 0.370088 | 0.992× |
+| Explicit | NCCL | 0.370777 | 0.352779 | 1.051× |
+| Split-explicit | MPI | 1.474333 | 1.399117 | 1.054× |
+| Split-explicit | NCCL | 1.392204 | 1.319781 | 1.055× |
 
-The controller waits until the required number of devices has no compute processes before launching each case.
+![Explicit weak scaling; four-GPU partition 2x2](explicit_weak_mpi_nccl_2x2.png)
+
+[Explicit weak scaling; four-GPU partition 2x2: SVG](explicit_weak_mpi_nccl_2x2.svg)
+
+![Explicit weak scaling; four-GPU partition 4x1](explicit_weak_mpi_nccl_4x1.png)
+
+[Explicit weak scaling; four-GPU partition 4x1: SVG](explicit_weak_mpi_nccl_4x1.svg)
+
+![Split-explicit weak scaling; four-GPU partition 2x2](split_explicit_weak_mpi_nccl_2x2.png)
+
+[Split-explicit weak scaling; four-GPU partition 2x2: SVG](split_explicit_weak_mpi_nccl_2x2.svg)
+
+![Split-explicit weak scaling; four-GPU partition 4x1](split_explicit_weak_mpi_nccl_4x1.png)
+
+[Split-explicit weak scaling; four-GPU partition 4x1: SVG](split_explicit_weak_mpi_nccl_4x1.svg)
+
+![Four-GPU partition comparison](four_gpu_partition_comparison.png)
+
+[Four-GPU partition comparison: SVG](four_gpu_partition_comparison.svg)
 
 ## Evidence and reproduction
 
@@ -77,3 +101,6 @@ The controller refuses an existing study to prevent duplicate runs. From the rep
 ```bash
 python3 benchmarking/results/rondeau/weak_scaling_mpi_nccl_2026-11-09_dt0p005/execution/analyze_results.py
 ```
+
+Original logs are preserved byte-for-byte in [original_logs.zip](original_logs.zip) with
+[SHA-256 hashes](original_logs_sha256.json); display logs have ANSI escapes and trailing whitespace removed.
