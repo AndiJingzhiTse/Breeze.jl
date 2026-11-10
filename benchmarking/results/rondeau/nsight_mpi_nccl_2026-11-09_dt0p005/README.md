@@ -1,6 +1,6 @@
 # Rondeau Nsight Systems: MPI and NCCL at Δt = 0.005 s
 
-Updated 2026-11-09 14:53 EST. **WAITING_FOR_BENCHMARK**; 0/6 requested cases complete.
+Updated 2026-11-10 04:28 EST. **COMPLETE**; 6/6 requested cases complete.
 
 Both compressible explicit and split-explicit dynamics use Float32, WENO5, the full dry CBL setup,
 10 warmup steps, then exactly 10 captured main steps at Δt = 0.005 s. Split-explicit uses 12 acoustic substeps.
@@ -18,27 +18,39 @@ Paths below are exact absolute paths on Rondeau. Pending paths are planned locat
 
 | Dynamics | Backend | GPUs | Partition | State | Rank | Nsight result file | Size (MiB) |
 |---|---|---|---|---|---|---|---|
-| compressible_explicit | SERIAL | 1 | 1×1 | PENDING | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_SERIAL_1g/rank_0/profile.nsys-rep` | pending |
-| compressible_explicit | MPI | 4 | awaiting rerun | PENDING | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_MPI_4g/rank_0/profile.nsys-rep` | pending |
-| compressible_explicit | MPI | 4 | awaiting rerun | PENDING | 1 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_MPI_4g/rank_1/profile.nsys-rep` | pending |
-| compressible_explicit | MPI | 4 | awaiting rerun | PENDING | 2 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_MPI_4g/rank_2/profile.nsys-rep` | pending |
-| compressible_explicit | MPI | 4 | awaiting rerun | PENDING | 3 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_MPI_4g/rank_3/profile.nsys-rep` | pending |
-| compressible_explicit | NCCL | 4 | awaiting rerun | PENDING | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_NCCL_4g/rank_0/profile.nsys-rep` | pending |
-| compressible_explicit | NCCL | 4 | awaiting rerun | PENDING | 1 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_NCCL_4g/rank_1/profile.nsys-rep` | pending |
-| compressible_explicit | NCCL | 4 | awaiting rerun | PENDING | 2 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_NCCL_4g/rank_2/profile.nsys-rep` | pending |
-| compressible_explicit | NCCL | 4 | awaiting rerun | PENDING | 3 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_NCCL_4g/rank_3/profile.nsys-rep` | pending |
-| compressible_splitexplicit | SERIAL | 1 | 1×1 | PENDING | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_SERIAL_1g/rank_0/profile.nsys-rep` | pending |
-| compressible_splitexplicit | MPI | 4 | awaiting rerun | PENDING | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_MPI_4g/rank_0/profile.nsys-rep` | pending |
-| compressible_splitexplicit | MPI | 4 | awaiting rerun | PENDING | 1 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_MPI_4g/rank_1/profile.nsys-rep` | pending |
-| compressible_splitexplicit | MPI | 4 | awaiting rerun | PENDING | 2 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_MPI_4g/rank_2/profile.nsys-rep` | pending |
-| compressible_splitexplicit | MPI | 4 | awaiting rerun | PENDING | 3 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_MPI_4g/rank_3/profile.nsys-rep` | pending |
-| compressible_splitexplicit | NCCL | 4 | awaiting rerun | PENDING | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_NCCL_4g/rank_0/profile.nsys-rep` | pending |
-| compressible_splitexplicit | NCCL | 4 | awaiting rerun | PENDING | 1 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_NCCL_4g/rank_1/profile.nsys-rep` | pending |
-| compressible_splitexplicit | NCCL | 4 | awaiting rerun | PENDING | 2 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_NCCL_4g/rank_2/profile.nsys-rep` | pending |
-| compressible_splitexplicit | NCCL | 4 | awaiting rerun | PENDING | 3 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_NCCL_4g/rank_3/profile.nsys-rep` | pending |
+| compressible_explicit | SERIAL | 1 | 1×1 | COMPLETE | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_SERIAL_1g/rank_0/profile.nsys-rep` | 0.51 |
+| compressible_explicit | MPI | 4 | 2×2 | COMPLETE | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_MPI_4g/rank_0/profile.nsys-rep` | 102.80 |
+| compressible_explicit | MPI | 4 | 2×2 | COMPLETE | 1 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_MPI_4g/rank_1/profile.nsys-rep` | 99.73 |
+| compressible_explicit | MPI | 4 | 2×2 | COMPLETE | 2 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_MPI_4g/rank_2/profile.nsys-rep` | 104.31 |
+| compressible_explicit | MPI | 4 | 2×2 | COMPLETE | 3 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_MPI_4g/rank_3/profile.nsys-rep` | 102.12 |
+| compressible_explicit | NCCL | 4 | 4×1 | COMPLETE | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_NCCL_4g/rank_0/profile.nsys-rep` | 1.11 |
+| compressible_explicit | NCCL | 4 | 4×1 | COMPLETE | 1 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_NCCL_4g/rank_1/profile.nsys-rep` | 1.11 |
+| compressible_explicit | NCCL | 4 | 4×1 | COMPLETE | 2 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_NCCL_4g/rank_2/profile.nsys-rep` | 1.10 |
+| compressible_explicit | NCCL | 4 | 4×1 | COMPLETE | 3 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_explicit_NCCL_4g/rank_3/profile.nsys-rep` | 1.10 |
+| compressible_splitexplicit | SERIAL | 1 | 1×1 | COMPLETE | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_SERIAL_1g/rank_0/profile.nsys-rep` | 0.98 |
+| compressible_splitexplicit | MPI | 4 | 4×1 | COMPLETE | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_MPI_4g/rank_0/profile.nsys-rep` | 414.94 |
+| compressible_splitexplicit | MPI | 4 | 4×1 | COMPLETE | 1 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_MPI_4g/rank_1/profile.nsys-rep` | 417.96 |
+| compressible_splitexplicit | MPI | 4 | 4×1 | COMPLETE | 2 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_MPI_4g/rank_2/profile.nsys-rep` | 398.72 |
+| compressible_splitexplicit | MPI | 4 | 4×1 | COMPLETE | 3 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_MPI_4g/rank_3/profile.nsys-rep` | 421.56 |
+| compressible_splitexplicit | NCCL | 4 | 4×1 | COMPLETE | 0 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_NCCL_4g/rank_0/profile.nsys-rep` | 3.82 |
+| compressible_splitexplicit | NCCL | 4 | 4×1 | COMPLETE | 1 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_NCCL_4g/rank_1/profile.nsys-rep` | 3.84 |
+| compressible_splitexplicit | NCCL | 4 | 4×1 | COMPLETE | 2 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_NCCL_4g/rank_2/profile.nsys-rep` | 3.82 |
+| compressible_splitexplicit | NCCL | 4 | 4×1 | COMPLETE | 3 | `/local_scratch/ajtse/breeze_nsight_mpi_nccl_2026-11-09/profiles/compressible_splitexplicit_NCCL_4g/rank_3/profile.nsys-rep` | 3.83 |
 
 Each completed rank also has `profile.sqlite` beside its `.nsys-rep` for trace validation.
 The [profile manifest](profile_manifest.json) records sizes, SHA-256 hashes, SQLite paths and captured kernel counts.
+
+## Partition selection from unprofiled measurements
+
+| Dynamics | Backend | 2×2 s/step | 4×1 s/step | Selected |
+|---|---|---|---|---|
+| compressible_explicit | MPI | 0.367202 | 0.370088 | 2×2 |
+| compressible_explicit | NCCL | 0.370777 | 0.352779 | 4×1 |
+| compressible_splitexplicit | MPI | 1.474333 | 1.399117 | 4×1 |
+| compressible_splitexplicit | NCCL | 1.392204 | 1.319781 | 4×1 |
+
+Selections use the lower observed mean from one timing window per layout, without repeats or error bars.
+Selected layouts may differ across backends; the profiles therefore describe each measured faster configuration.
 
 ## Reproduction and validation
 
